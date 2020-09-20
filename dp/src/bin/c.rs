@@ -48,6 +48,27 @@ macro_rules! read_value {
     };
 }
 
+use std::iter::Iterator;
+
 fn main() {
-    unimplemented!();
+    input! {
+        n: usize,
+        choices: [[u32; 3]; n],
+    }
+    let mut max_happiness_on = vec![vec![0; 3]; n];
+    max_happiness_on[0] = choices[0].clone();
+
+    for i in 1..=(n - 1) {
+        let ii = i as isize;
+        for j in 0..=2 {
+            let ij = j as isize;
+            max_happiness_on[i][j] = choices[i][j]
+                + u32::max(
+                    max_happiness_on[(ii - 1) as usize][((ij - 1).rem_euclid(3)) as usize],
+                    max_happiness_on[(ii - 1) as usize][((ij - 2).rem_euclid(3)) as usize],
+                )
+        }
+    }
+    let max_happiness_on_last_day = max_happiness_on[n - 1].iter().max().unwrap();
+    println!("{}", max_happiness_on_last_day)
 }
