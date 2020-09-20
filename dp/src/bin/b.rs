@@ -46,6 +46,28 @@ macro_rules! read_value {
         $iter.next().unwrap().parse::<$t>().expect("Parse error")
     };
 }
+
 fn main() {
-    unimplemented!();
+    input! {
+        n: usize,
+        k: usize,
+        heights: [i32; n],
+    }
+    let mut minimum_costs = vec![0; n];
+    minimum_costs[0] = 0;
+    for i in 1..=(n - 1) {
+        let mut min = std::i32::MAX;
+        for j in 1..=k {
+            if (i - j) < 0 {
+                continue;
+            }
+
+            min = i32::min(
+                min,
+                minimum_costs[i - j] + (heights[i - j] - heights[i]).abs(),
+            )
+        }
+        minimum_costs[i] = min;
+    }
+    println!("{}", minimum_costs[n - 1])
 }
