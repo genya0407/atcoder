@@ -43,8 +43,20 @@ macro_rules! read_value {
         read_value!($iter, usize) - 1
     };
 
+    ($iter:expr, [ $struct:ident; $( $field:ident ),* ]) => {
+        $struct {
+            $(
+                $field : read_value!($iter),
+            )*
+        }
+    };
+
     ($iter:expr, $t:ty) => {
         $iter.next().unwrap().parse::<$t>().expect("Parse error")
+    };
+
+    ($iter:expr) => {
+        $iter.next().unwrap().parse().expect("Parse error")
     };
 }
 
@@ -58,14 +70,7 @@ fn main() {
     input! {
         n: i64,
         w: i64,
-        _loads: [(i64, i64); n as usize]
-    }
-    let mut loads = vec![];
-    for l in _loads {
-        loads.push(Load {
-            weight: l.0,
-            value: l.1,
-        })
+        loads: [[Load; weight, value]; n as usize]
     }
     let mut cache = vec![vec![None; w as usize + 1]; n as usize];
     let v = max_value(&loads, &mut cache, n - 1, w);
