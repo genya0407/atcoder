@@ -48,6 +48,45 @@ macro_rules! read_value {
     };
 }
 
+#[derive(Debug)]
+struct Load {
+    pub weight: i64,
+    pub value: i64,
+}
+
 fn main() {
-    unimplemented!();
+    input! {
+        n: i64,
+        w: i64,
+        _loads: [(i64, i64); n as usize]
+    }
+    let mut loads = vec![];
+    for l in _loads {
+        loads.push(Load {
+            weight: l.0,
+            value: l.1,
+        })
+    }
+    // [k][y] -> value
+    let mut max_values = vec![vec![0; (w + 1) as usize]; n as usize];
+    for k in 0..=(n - 1) {
+        for y in 1..=w {
+            let using = access(&max_values, k - 1, y - loads[k as usize].weight)
+                .map(|s| s + loads[k as usize].value)
+                .unwrap_or(0);
+            let not_using = access(&max_values, k - 1, y).unwrap_or(0);
+            max_values[k as usize][y as usize] = i64::max(using, not_using);
+        }
+    }
+    println!("{}", max_values[(n - 1) as usize][w as usize])
+}
+
+fn access(max_values: &Vec<Vec<i64>>, k: i64, y: i64) -> Option<i64> {
+    if y < 0 {
+        None
+    } else if k < 0 {
+        Some(0)
+    } else {
+        Some(max_values[k as usize][y as usize])
+    }
 }
