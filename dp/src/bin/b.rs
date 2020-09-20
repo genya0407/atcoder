@@ -59,7 +59,7 @@ fn main() {
     for i in 1..=(n - 1) {
         let mut min = std::i32::MAX;
         for j in 1..=k {
-            if (i - j) < 0 {
+            if (i as i32 - j as i32) < 0 {
                 continue;
             }
 
