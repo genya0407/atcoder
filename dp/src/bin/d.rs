@@ -4,6 +4,7 @@ macro_rules! input {
         input_inner!{iter, $($r)*}
     };
     ($($r:tt)*) => {
+        #[allow(unused_mut)]
         let mut s = {
             use std::io::Read;
             let mut s = String::new();
@@ -46,6 +47,7 @@ macro_rules! read_value {
         $iter.next().unwrap().parse::<$t>().expect("Parse error")
     };
 }
+
 fn main() {
     unimplemented!();
 }

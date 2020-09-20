@@ -4,6 +4,7 @@ macro_rules! input {
         input_inner!{iter, $($r)*}
     };
     ($($r:tt)*) => {
+        #[allow(unused_mut)]
         let mut s = {
             use std::io::Read;
             let mut s = String::new();
