@@ -62,8 +62,8 @@ macro_rules! read_value {
 
 #[derive(Debug)]
 struct Load {
-    pub weight: i64,
-    pub value: i64,
+    weight: i64,
+    value: i64,
 }
 
 fn main() {
