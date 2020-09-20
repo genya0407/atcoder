@@ -43,8 +43,20 @@ macro_rules! read_value {
         read_value!($iter, usize) - 1
     };
 
+    ($iter:expr, [ $struct:ident; $( $field:ident ),* ]) => {
+        $struct {
+            $(
+                $field : read_value!($iter),
+            )*
+        }
+    };
+
     ($iter:expr, $t:ty) => {
         $iter.next().unwrap().parse::<$t>().expect("Parse error")
+    };
+
+    ($iter:expr) => {
+        $iter.next().unwrap().parse().expect("Parse error")
     };
 }
 
